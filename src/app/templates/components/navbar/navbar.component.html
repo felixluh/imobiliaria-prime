@@ -1,0 +1,15 @@
+<nav class="nav">
+    <a routerLink="/" class="brand">Imobiliária <strong>Prime</strong></a>
+    <div class="links">
+        <a routerLink="/">Início</a>
+        <a routerLink="/meus-interesses" *ngIf="auth.isAuthenticated() &&
+auth.getUserTipo()==='cliente'">Meus interesses</a>
+        <a routerLink="/dashboard" *ngIf="auth.isAuthenticated() &&
+auth.getUserTipo()==='corretor'">Dashboard</a>
+    </div>
+    <div class="auth">
+        <a routerLink="/login" *ngIf="!auth.isAuthenticated()">Entrar</a>
+        <button *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Sair
+            ({{nome()}})</button>
+    </div>
+</nav>

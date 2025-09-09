@@ -1,0 +1,9 @@
+<article class="card">
+    <img [src]="imovel.imagemUrl" alt="{{imovel.titulo}}" />
+    <div class="info">
+        <h3>{{imovel.titulo}}</h3>
+        <p>{{imovel.cidade}} • {{imovel.tipo}}</p>
+        <strong>R$ {{imovel.preco | number:'1.0-0'}}</strong>
+        <a [routerLink]="['/imovel', imovel.id]">Ver detalhes</a>
+    </div>
+</article>

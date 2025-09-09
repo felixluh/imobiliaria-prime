@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -o",
+    "api": "json-server --watch db.json --port 3008",
     "build": "ng build",
+    "lint": "ng lint",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:imobiliaria-prime": "node dist/imobiliaria-prime/server/server.mjs"
@@ -32,8 +34,10 @@
     "@angular/router": "^20.2.0",
     "@angular/ssr": "^20.2.2",
     "express": "^5.1.0",
+    "json-server": "^1.0.0-beta.3",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "^0.15.1"
   },
   "devDependencies": {
     "@angular/build": "^20.2.2",

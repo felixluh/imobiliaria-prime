@@ -1,0 +1,39 @@
+<h2>Meus imóveis</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()" class="card">
+  <div class="grid-2">
+    <label>Título <input formControlName="titulo"></label>
+    <label>Tipo <input formControlName="tipo"></label>
+    <label>Cidade <input formControlName="cidade"></label>
+    <label>Preço <input type="number" formControlName="preco"></label>
+  </div>
+
+  <label>Descrição <textarea formControlName="descricao"></textarea></label>
+  <label>Imagem URL <input formControlName="imagemUrl"></label>
+
+  <button type="submit">{{ form.value.id ? 'Atualizar' : 'Criar' }}</button>
+</form>
+
+<table class="tabela">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Título</th>
+      <th>Cidade</th>
+      <th>Preço</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let i of lista">
+      <td>{{i.id}}</td>
+      <td>{{i.titulo}}</td>
+      <td>{{i.cidade}}</td>
+      <td>R$ {{i.preco | number:'1.0-0'}}</td>
+      <td>
+        <button (click)="editar(i)">Editar</button>
+        <button (click)="remover(i)">Remover</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
