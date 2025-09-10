@@ -1,5 +1,13 @@
 <h2>Meus interesses</h2>
-<ul>
-<li *ngFor="let i of lista">{{i.titulo}} — {{i.cidade}} — R$ {{i.preco |
-number:'1.0-0'}}</li>
-</ul>
+<div *ngIf="lista.length > 0; else noInteresses">
+    <ul class="lista-interesses">
+        <li *ngFor="let i of lista" class="card-interesse">
+            <h3>{{i.titulo}}</h3>
+            <p>{{i.cidade}} • {{i.tipo}}</p>
+            <strong>R$ {{i.preco | number:'1.0-0'}}</strong>
+        </li>
+    </ul>
+</div>
+<ng-template #noInteresses>
+    <p>Você ainda não marcou interesse em nenhum imóvel.</p>
+</ng-template>

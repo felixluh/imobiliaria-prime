@@ -1,39 +1,65 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { ImoveisService } from '../../../core/services/imovel.service';
-import { AuthService } from '../../../core/services/auth.service';
 import { Imovel } from '../../../core/models/imovel.model';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap, of } from 'rxjs';
+import { AuthService } from '../../../core/services/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { NotificacaoService } from '../../../core/services/notificacao.service';
 
 @Component({
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule],
- templateUrl: './detalhes-imovel.component.html',
-styleUrls: ['./detalhes-imovel.component.scss']
+    imports: [CommonModule],
+    templateUrl: './detalhes-imovel.component.html',
+    styleUrls: ['./detalhes-imovel.component.scss']
 })
-export class DetalhesImovelComponent {
-    lista: Imovel[] = [];
-    form!: FormGroup;
+export class DetalhesImovelComponent implements OnInit {
+    imovel: Imovel | null = null;
+    isClienteLogado = false;
+    private api = 'http://localhost:3008';
 
     constructor(
-        private fb: FormBuilder,
-        private service: ImoveisService,
-        private auth: AuthService
+        private route: ActivatedRoute,
+        private imoveisService: ImoveisService,
+        private authService: AuthService,
+        private http: HttpClient,
+        private notificacao: NotificacaoService
     ) { }
 
-    ngOnInit() { this.load(); }
-    load() { this.service.listar().subscribe(d => this.lista = d.filter(x => x.corretorId === this.auth.getUserId())); }
-    salvar() {
-        if (this.form.invalid) return;
-        const data = this.form.value as Imovel;
-        const payload: Imovel = { ...data, corretorId: this.auth.getUserId()! };
-        (data.id ? this.service.atualizar(data.id, payload) :
-            this.service.criar(payload))
-            .subscribe(() => { this.form.reset(); this.load(); });
+    ngOnInit() {
+        this.isClienteLogado = this.authService.isAuthenticated() && this.authService.getUserTipo() === 'cliente';
+        this.route.paramMap.pipe(
+            switchMap(params => {
+                const id = params.get('id');
+                return id ? this.imoveisService.obter(+id) : of(null);
+            })
+        ).subscribe(imovel => {
+            this.imovel = imovel;
+        });
     }
-    editar(i: Imovel) { this.form.patchValue(i); }
-    remover(i: Imovel) {
-        if (i.id) this.service.remover(i.id).subscribe(() =>
-            this.load());
+
+    marcarInteresse() {
+        const clienteId = this.authService.getUserId();
+        const imovelId = this.imovel?.id;
+
+        if (!clienteId || !imovelId) {
+            this.notificacao.show('Erro: Usuário ou imóvel não identificado.');
+            return;
+        }
+
+        const interessePayload = {
+            clienteId: clienteId,
+            imovelId: imovelId
+        };
+
+        this.http.post(`${this.api}/interesses`, interessePayload)
+            .subscribe({
+                next: () => this.notificacao.show('Interesse registrado com sucesso!'),
+                error: (err) => {
+                    console.error('Erro ao registrar interesse:', err);
+                    this.notificacao.show('Erro ao registrar interesse. Tente novamente.');
+                }
+            });
     }
 }

@@ -1,0 +1,16 @@
+<section *ngIf="imovel" class="detalhes-imovel">
+    <img [src]="imovel.imagemUrl" alt="Imagem de {{imovel.titulo}}" class="imagem-principal">
+    <div class="info-container">
+        <h1>{{ imovel.titulo }}</h1>
+        <p class="cidade-tipo">{{ imovel.cidade }} • {{ imovel.tipo }}</p>
+        <strong class="preco">R$ {{ imovel.preco | number:'1.0-0' }}</strong>
+        <p class="descricao">{{ imovel.descricao }}</p>
+
+        <button *ngIf="isClienteLogado" (click)="marcarInteresse()" class="btn-interesse">
+            Tenho Interesse
+        </button>
+    </div>
+</section>
+<div *ngIf="!imovel">
+    <p>Imóvel não encontrado.</p>
+</div>

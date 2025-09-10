@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ImoveisService } from '../../../core/services/imovel.service';
@@ -11,7 +11,7 @@ import { Imovel } from '../../../core/models/imovel.model';
     templateUrl: './dashboard-imoveis.component.html',
     styleUrls: ['./dashboard-imoveis.component.scss']
 })
-export class DashboardImoveisComponent {
+export class DashboardImoveisComponent implements OnInit {
     lista: Imovel[] = [];
     form!: FormGroup;
 
@@ -36,8 +36,10 @@ export class DashboardImoveisComponent {
     }
 
     load() {
+        const corretorId = this.auth.getUserId();
+        if (corretorId === null) return;
         this.service.listar().subscribe(d => {
-            this.lista = d.filter(x => x.corretorId === this.auth.getUserId());
+            this.lista = d.filter(x => x.corretorId === corretorId);
         });
     }
 
@@ -62,8 +64,8 @@ export class DashboardImoveisComponent {
     }
 
     editar(i: Imovel) {
-  this.form.patchValue(i);
-}
+        this.form.patchValue(i);
+    }
 
     remover(i: Imovel) {
         if (i && i.id != null) {

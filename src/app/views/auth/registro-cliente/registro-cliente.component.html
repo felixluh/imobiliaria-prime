@@ -1,0 +1,9 @@
+<h2>Registrar-se como Cliente</h2>
+<form [formGroup]="form" (ngSubmit)="registrar()" class="card">
+    <label>Nome <input formControlName="nome" type="text" /></label>
+    <label>Email <input formControlName="email" type="email" /></label>
+    <label>Senha <input formControlName="senha" type="password" /></label>
+    <button type="submit">Registrar</button>
+    <p class="erro" *ngIf="erro">{{ erro }}</p>
+    <p>Já tem uma conta? <a routerLink="/login">Faça login</a></p>
+</form>
