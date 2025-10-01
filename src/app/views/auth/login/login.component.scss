@@ -8,35 +8,49 @@
     color: var(--cor-secundaria);
   }
 
-  label {
-    display: block;
-    margin-bottom: 1rem;
+  .btn-registrar {
+    background-color: var(--cor-principal);
+    color: var(--branco);
+    border: none;
+    cursor: pointer;
     font-weight: bold;
+    margin-top: 10px;
   }
+    &:hover {
+      filter: brightness(1.1);
+    }
 
-  input {
-    display: block;
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-
-  .erro {
-    color: #ff4d4f;
-    margin-top: 1rem;
-    text-align: center;
-  }
-
-  p {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.9em;
-    a {
-      color: var(--cor-principal);
-      text-decoration: none;
+    label {
+      display: block;
+      margin-bottom: 1rem;
       font-weight: bold;
-      &:hover {
-        text-decoration: underline;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .erro {
+      color: #ff4d4f;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9em;
+
+      a {
+        color: var(--cor-principal);
+        text-decoration: none;
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
-}

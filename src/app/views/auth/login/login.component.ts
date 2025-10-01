@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { Location } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -18,7 +19,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     // inicialização correta do form
     this.form = this.fb.group({
@@ -27,6 +29,9 @@ export class LoginComponent {
     });
   }
 
+  registrarSe(): void {
+    this.router.navigateByUrl('/registro');
+  }
   entrar() {
     if (this.form.invalid) {
       this.erro = 'Preencha os campos corretamente.';
